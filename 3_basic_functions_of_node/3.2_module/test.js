@@ -14,3 +14,4 @@
 // ttt() // global
 
 console.log(this)   // {}
+

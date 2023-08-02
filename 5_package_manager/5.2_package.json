@@ -1,0 +1,108 @@
+설치한 패키지의 버젼을 관리하는 파일
+
+노드 프로젝트를 시작하기 전에 폴더 내부에 무조건 package.json 부터 만들고 시작해야 한다.
+
+만드는 명령어:
+(프로젝트를 시작할 경로에서) npm init
+
+• package name: 패키지의 이름입니다. package.json의 name 속성에 저장됩니다.
+• version: 패키지의 버전입니다. npm의 버전은 다소 엄격하게 관리됩니다. 5.3절에서 다룹니다.
+• entry point: 자바스크립트 실행 파일 진입점입니다. 보통 마지막으로 module.exports를 하는 파일을 지정합니다. package.json의 main 속성에 저장됩니다.
+• test command: 코드를 테스트할 때 입력할 명령어를 의미합니다. package.json scripts 속성 안의 test 속성에 저장됩니다.
+• git repository: 코드를 저장해둔 깃(Git) 저장소 주소를 의미합니다. 나중에 소스에 문제가 생겼을 때 사용자들이 이 저장소에 방문해 문제를 제기할 수도 있고, 코드 수정본을 올릴 수도 있습니다. package.json의 repository 속성에 저장됩니다.
+• keywords: 키워드는 npm 공식 홈페이지(https://npmjs.com)에서 패키지를 쉽게 찾을 수 있게 합니다. package.json의 keywords 속성에 저장됩니다.
+• license: 해당 패키지의 라이선스를 넣으면 됩니다.
+
+npm init -y 로 입력을 나중으로 생략 가능.
+
+
+$ 패키지 설치(express) - npm install express
+$ 여러 패키지 동시에 설치 - npm install 패키지1 패키지2 패키지3 …
+
+npm install 시 node_modules 폴더 생성
+express 외에도 express와 의존관계가 있는 패키지들이 모두 설치됨
+
+package-lock.json도 생성되어 패키지 간 의존관계를 명확하게 표시함
+
+$ npm install --save-dev [패키지명] 또는 npm i -D [패키지명]
+devDependencies에 추가됨 - 개발시에만 사용되는 패키지들(배포 때는 dependencies만 사용됨)
+
+// 생성된 package.json의 예시
+{
+    "name": "npmtest",
+    "version": "0.0.1",
+    "description": "hello package.json",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "ZeroCho",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.18.2"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.1"
+    }
+}
+
+
+  $ scripts 부분은 npm 명령어를 저장해두는 부분
+  콘솔에서 npm run [스크립트 명령어]를 입력하면 해당 스크립트가 실행된다. 
+
+  예를 들어 npm run test를 수행하면 echo "Error: no test specified" && exit 1이 실행된다.
+  (echo "Error: no test specified"는 콘솔에 해당 문자열을 출력하라는 뜻이고, exit 1은 에러와 함께 종료하라는 뜻)
+
+  자주 사용되는 명령어인 start나 test는 run을 생략할 수 있다.(npm start)
+
+  dependencies - npm install [패키지명] 으로 설치된 패키지들의 버젼.
+
+  $ --save 옵션
+  dependencies에 패키지 이름을 추가하는 옵션이지만 npm@5부터는 기본값으로 설정되어 있으므로 따로 붙이지 않아도 된다.
+
+  $ 프로젝트 이름
+  방금 express를 설치했습니다. 이때 프로젝트 이름(package.json의 name, 현재 npmtest)은 express여서는 안 된다
+  앞으로 많은 패키지를 설치할 텐데 그때마다 프로젝트 이름과 겹치지 않는지 확인해야 한다.
+
+  $ peerDependencies
+  예를 들어 A라는 라이브러리의 package.json에 다음과 같은 코드가 있다면
+  "peerDependencies": {
+    "jQuery": "^3.0.0"
+  }
+  A라는 라이브러리가 jQuery 3 버전을 직접적으로 사용(import나 require)하지는 않지만, 
+  jQuery 3 버전이 설치되어 있다고 생각하고 코드를 작성했다는 의미이다. 
+  따라서 A라는 라이브러리를 사용하는 입장에서 jQuery를 미리 설치하지 않았거나 jQuery 3 버전이 아닌 다른 버전을 설치한 경우 에러가 발생하게 됩니다.
+
+  peerDependencies의 버젼이 충돌하는 경우(jQuery2, jQuery3 등)가 있는데, 최선은 애초에 peerDependencies가 서로 충돌하는 패키지를 설치하지 않는 것이다.
+  다른 해결방법들: https://thebook.io/080334/0241/
+
+  $ 전역(global) 설치
+  패키지를 현재 폴더의 node_modules에 설치하는 것이 아니라 npm이 설치되어 있는 폴더에 설치. 
+  (윈도의 경우 기본 경로는 C:\Users\사용자명\AppData\Roaming pm, 맥의 경우 기본 경로는 /usr/local/lib/node_modules)
+  
+  이 폴더의 경로는 보통 시스템 환경 변수에 등록되어 있으므로 전역 설치한 패키지는 콘솔의 명령어로 사용할 수 있다. 
+  전역 설치를 했다고 해서 패키지를 모든 곳에서 사용한다는 뜻은 아니다. 대부분 명령어로 사용하기 위해 전역 설치한다.
+
+  ex) 
+  npm install --global rimraf
+  sudo npm install --global rimraf (리눅스나 맥일 경우 관리자 권한이 필요할 때)
+  npm i -g rimraf
+
+  전역 설치한 패키지는 package.json에 기록되지 않습니다.
+
+  rimraf는 리눅스나 맥의 rm -rf 명령어를 윈도에서도 사용할 수 있게 해주는 패키지
+  rimraf nodemodules
+  npx rimraf nodemodules
+
+  $ npm vs npx
+  https://joonfluence.tistory.com/659
+  https://ljh86029926.gitbook.io/coding-apple-react/undefined/npm-npx
+
+  node_modulese는 언제든지 npm i 로 설치하면 되기 때문에 보관할 필요가 없다.
+  깃 같은 버전 관리 프로그램과 같이 사용할 때도 node_modules는 커밋하지 않는다.
+  
+  단, 실제 서비스 배포 때에는 npm i를 할 때 마다 package.json, package-lock.json이 변할 수 있으므로 npm ci로 배포한다
+  $ npm ci
+  https://mygumi.tistory.com/409
+
+

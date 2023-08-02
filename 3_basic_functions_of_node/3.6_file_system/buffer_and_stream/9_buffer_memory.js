@@ -1,4 +1,4 @@
-// readFile 메서드를 사용해 big.txt를 big2.txt로 복사
+// readFile 메서드를 사용해 big.txt를 big2.txt로 복사 -> 버퍼 사용
 
 const fs = require('fs');
 

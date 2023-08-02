@@ -64,4 +64,3 @@ console.log(myEvent.listenerCount('event2'));
 // • listenerCount(이벤트명): 현재 리스너가 몇 개 연결되어 있는지 확인합니다.
 
 // 이제 직접 이벤트를 만들 수 있으므로 다양한 동작을 직접 구현할 수 있으며, 웹 서버를 구축할 때 많이 사용됩니다.
-
